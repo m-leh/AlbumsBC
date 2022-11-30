@@ -18,7 +18,9 @@ class AlbumsRepository(
             is Resource.Success -> {
                 remoteAlbums.data?.let { it ->
                     albumsLocalDataSource.removeAll()
-                    albumsLocalDataSource.addAlbums(it.toEntity())
+                    it.forEach { album ->		
+                    	albumsLocalDataSource.addAlbum(album.toEntity())
+                    }
                 }
             }
             is Resource.Error -> {

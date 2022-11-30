@@ -53,11 +53,13 @@ class AlbumsRepositoryTest {
     fun testLoadAlbums() = runTest {
         coEvery { albumsRemoteDataSource.getAlbums() }.returns(Resource.Success(albums))
         coEvery { albumsLocalDataSource.removeAll() }.answers {}
-        coEvery { albumsLocalDataSource.addAlbums(any()) }.answers {}
+        coEvery { albumsLocalDataSource.addAlbum(any()) }.answers {}
         launch {
             albumsRepository.loadAlbums()
             coVerify { albumsLocalDataSource.removeAll() }
-            coVerify { albumsLocalDataSource.addAlbums(albums.toEntity()) }
+	    albums.forEach { album ->
+            	coVerify { albumsLocalDataSource.addAlbum(album.toEntity()) }
+	    }
         }
     }
 
